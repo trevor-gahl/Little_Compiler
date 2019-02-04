@@ -1,0 +1,10 @@
+#running in python3.6
+pip install antlr4-python3-runtime
+
+
+#can feed in multiple files to parse.  will now seperate files sections
+for FILE1 in "$1"
+do
+python Driver.py $FILE1
+done
+
