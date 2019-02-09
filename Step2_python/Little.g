@@ -72,7 +72,6 @@ fragment NL         : '\r'? '\n' | '\r' ;
  * Lexers
  */
 
-KEYWORD             : 'PROGRAM'|'BEGIN'|'END'|'FUNCTION'|'READ'|'WRITE'|'IF'|'ELSE'|'FI'|'FOR'|'ROF'|'RETURN'|'INT'|'VOID'|'STRING'|'FLOAT'|'WHILE'|'ENDIF'|'ENDWHILE' ;
 PROGRAM             : 'PROGRAM';
 BEGIN               : 'BEGIN';
 END                 : 'END';

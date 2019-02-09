@@ -24,17 +24,19 @@ from LittleParser import LittleParser
 def main(filename):
     # Create a lexer stream by passing filestream to generated lexer
     lexer = LittleLexer(FileStream(filename))
-    # Read the first token
-    token = lexer.nextToken()
-    # If the token isn't the end of file token continue
-    while token.type != Token.EOF:
-        # create name variable that hold relevant token information
-        name = lexer.symbolicNames[token.type]
-        # Output token type and token value on separate lines
-        print("Token Type: {}".format(name))
-        print("Value: {}".format(token.text))
-        # Update token to reflect next token in stream
-        token = lexer.nextToken()
+    # Create token stream from lexer
+    stream = CommonTokenStream(lexer)
+    # Initialize parser using token stream
+    parser = LittleParser(stream)
+    # Prevent parser error output (Tired of watching it fail)
+    parser.removeErrorListeners()
+    # Run parse tree using token stream initialized above
+    parser.program()
+    # If program is valid print accepted, otherwise print not accepted
+    if parser._syntaxErrors == 0:
+        print("Accepted")
+    else:
+       print("Not accepted")
 
 ###############################################
 ## Python Main to read input and run program ##
