@@ -1,16 +1,13 @@
-# Generated from Little.g by ANTLR 4.7.2
+# Generated from Little.g by ANTLR 4.5.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
-from typing.io import TextIO
-import sys
-
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\n")
-        buf.write("\7\4\2\t\2\3\2\3\2\3\2\2\2\3\2\2\2\2\5\2\4\3\2\2\2\4\5")
-        buf.write("\3\2\2\2\5\3\3\2\2\2\2")
+        buf.write("\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\n")
+        buf.write("\7\4\2\t\2\3\2\3\2\3\2\2\2\3\2\2\2\5\2\4\3\2\2\2\4\5\3")
+        buf.write("\2\2\2\5\3\3\2\2\2\2")
         return buf.getvalue()
 
 
@@ -44,12 +41,11 @@ class LittleParser ( Parser ):
     OPERATOR=7
     WHITESPACE=8
 
-    def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
-        super().__init__(input, output)
-        self.checkVersion("4.7.2")
+    def __init__(self, input:TokenStream):
+        super().__init__(input)
+        self.checkVersion("4.5.2")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
-
 
 
 
