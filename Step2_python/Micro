@@ -1,7 +1,11 @@
 #running in python3.6
 
 #echo "making sure antlr4 runtime is installed for python 3"
-#pip install antlr4-python3-runtime
+if !(test -f antlr/Lexer.py)
+then
+    DIR=$(pwd)
+    pip3 install antlr4-python3-runtime==4.5.2 --target=$DIR
+fi
 
 #echo "running ANTLR4 for python 3 on Little.g"
 #checking if the tokens are already generated, if not run antlr4 to gen them
@@ -16,6 +20,6 @@ fi
 for FILE1 in "$1"
 do
 python Driver.py $FILE1
-echo " "
+#echo ""
 done
 
