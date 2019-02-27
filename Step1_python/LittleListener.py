@@ -1,4 +1,4 @@
-# Generated from Little.g by ANTLR 4.7.2
+# Generated from Little.g by ANTLR 4.5.2
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .LittleParser import LittleParser
