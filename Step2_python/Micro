@@ -1,7 +1,7 @@
 #running in python3.6
 
 #echo "making sure antlr4 runtime is installed for python 3"
-if !(test -f antlr/Lexer.py)
+if !(test -f antlr4/Lexer.py)
 then
     DIR=$(pwd)
     pip3 install antlr4-python3-runtime==4.5.2 --target=$DIR
@@ -19,7 +19,7 @@ fi
 #can feed in multiple files to parse.  will now seperate files sections
 for FILE1 in "$1"
 do
-python Driver.py $FILE1
+python3 Driver.py $FILE1
 #echo ""
 done
 
