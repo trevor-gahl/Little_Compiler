@@ -4,8 +4,11 @@
 #pip install antlr4-python3-runtime
 
 #echo "running ANTLR4 for python 3 on Little.g"
-#antlr4 -Dlanguage=Python3 Little.g
-
+#checking if the tokens are already generated, if not run antlr4 to gen them
+if !(test -f Little.tokens)
+then
+   antlr4 -Dlanguage=Python3 Little.g
+fi
 #echo "Now Parsing files with Driver.py"
 #echo " "
 
