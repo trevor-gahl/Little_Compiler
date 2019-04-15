@@ -1,0 +1,6 @@
+num:=7
+i:=2
+a:=42
+num:=(num+a)
+num:=(num+a)
+num:=(num-a)

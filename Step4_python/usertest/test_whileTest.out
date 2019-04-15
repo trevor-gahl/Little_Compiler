@@ -1,0 +1,7 @@
+num:=7.0
+i:=100
+j:=1
+approx:=num
+newapprox:=(0.5*(approx+(num/approx)))
+approx:=newapprox
+i:=(i-1)
