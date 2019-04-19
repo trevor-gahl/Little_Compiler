@@ -1,153 +1,12 @@
-# Generated from /home/ubuntu/Little.g4 by ANTLR 4.7.1
+# Generated from Little.g4 by ANTLR 4.7.1
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .LittleParser import LittleParser
 else:
     from LittleParser import LittleParser
 
-class bin_op():
-    def __init__(self, left=None, right=None, op=None):
-        self.left = left
-        self.right = right
-        self.op = op
-        self.code = []
-        self.temp_register = None
-
-class leaf():
-    def __init__(self, value=None, in_type=None):
-        self.value = value
-        self.type = in_type
-
 # This class defines a complete listener for a parse tree produced by LittleParser.
-class AST(ParseTreeListener):
-
-    def __init__(self, symbol_table):
-        self.symbol_table = self.parse_symbol_table(symbol_table)
-        self.roots = []
-        self.root = bin_op()
-
-    def parse_symbol_table(self, symbol_table):
-        return {symbol_table["GLOBAL"][var][0]:symbol_table["GLOBAL"][var][1] for var in range(len(symbol_table["GLOBAL"]))}
-
-    def add_root(self):
-        self.roots.append(self.root)
-        self.root = bin_op()
-
-    def print_ast(self):
-        ''' Print out each tree contained within the roots list'''
-        for root in self.roots:
-            self.recurse(root)
-            print()
-
-    def recurse(self, node):
-        ''' Print out a AST from the bottom leftmost node to the rightmost node. Parenthesizes expressions
-            that are paired below an operation node'''
-        if type(node) is leaf:
-            # print("[{}]".format(node.value), end="")
-            # print("{}[{}]".format(node.value, node.type), end="")
-            print(node.value, end="")
-            return
-        if node.left and node.op != ':=': print("(", end="")
-        self.recurse(node.left)
-        print(node.op, end="")
-        self.recurse(node.right)
-        if node.left and node.op != ':=': print(")", end="")
-
-    def visit_expr(self, child):
-        ''' Loop for handling the possible cases of an expression  node'''
-        if child.expr_prefix().empty(): return self.visit_factor(child.factor())
-
-        node = bin_op()
-        node.op = child.expr_prefix().addop().getText()
-        if child.expr_prefix().expr_prefix().empty():
-            node.left = self.visit_factor(child.expr_prefix().factor())
-            node.right = self.visit_factor(child.factor())
-        else:
-            node.left = self.visit_expr_prefix(child.expr_prefix())
-            node.right = self.visit_factor(child.factor())
-
-        # print("left: {}".format(node.left))
-        # print("op: {}".format(node.op))
-        # print("right: {}".format(node.right))
-
-        return node
-
-    def visit_factor(self, child):
-        ''' Loop for handling the possible cases of a factor node'''
-        if self.is_end(child): return self.visit_primary(child.postfix_expr().primary())
-
-        node = bin_op()
-        node.op = child.factor_prefix().mulop().getText()
-        if child.factor_prefix().factor_prefix().empty():
-            node.left = self.visit_primary(child.factor_prefix().postfix_expr().primary())
-            node.right = self.visit_primary(child.postfix_expr().primary())
-        else:
-            node.left = self.visit_factor_prefix(child.factor_prefix())
-            node.right = self.visit_primary(child.postfix_expr().primary())
-
-        # print("left: {}".format(node.left))
-        # print("op: {}".format(node.op))
-        # print("right: {}".format(node.right))
-
-        return node
-
-    def visit_factor_prefix(self, child):
-        ''' Loop for handling the possible cases of a factor_prefix node'''
-        # if self.is_end(child): return leaf(value=child.getText())
-
-        node = bin_op()
-        node.op = child.factor_prefix().mulop().getText()
-        if child.factor_prefix().factor_prefix().empty():
-            node.left = self.visit_primary(child.factor_prefix().postfix_expr().primary())
-            node.right = self.visit_primary(child.postfix_expr().primary())
-        else:
-            node.left = self.visit_factor_prefix(child.factor_prefix())
-            node.right = self.visit_primary(child.postfix_expr().primary())
-
-        # print("left: {}".format(node.left))
-        # print("op: {}".format(node.op))
-        # print("right: {}".format(node.right))
-
-        return node
-
-
-    def visit_expr_prefix(self, child):
-        ''' Loop for handling the possible cases of a expr_prefix node'''
-        # if self.is_end(child):return leaf(value=child.getText())
-
-        node = bin_op()
-        node.op = child.expr_prefix().addop().getText()
-        if child.expr_prefix().expr_prefix().empty():
-            node.left = self.visit_primary(child.expr_prefix().factor().postfix_expr().primary())
-            node.right = self.visit_factor(child.factor())
-        else:
-            node.left = self.visit_expr_prefix(child.expr_prefix())
-            node.right = self.visit_factor(child.factor())
-
-        # print("left: {}".format(node.left))
-        # print("op: {}".format(node.op))
-        # print("right: {}".format(node.right))
-
-        return node
-
-    def visit_primary(self, child):
-        ''' Checks if our value is a node, or is a parenthesized expression. Returns the releveant construct.'''
-        if type(child) is LittleParser.PrimaryContext and child.expr():
-            return self.visit_expr(child.expr())
-        else:
-            return leaf(value=child.getText(), in_type=self.symbol_table[child.getText()] if child.getText() in self.symbol_table.keys() else "REAL")
-
-    def is_end(self, child):
-        ''' Check if the current node is the last node in its branch. Returns true if so. '''
-        # if child.getChildCount() == 0:
-        #     return True
-        real_children = 0
-        for i in range(0, child.getChildCount()):
-            if child.getChild(i).getText() != '': real_children += 1
-        if real_children == 1:return True
-        return False
-
-#------------------------------LISTENER FUNCTIONS----------------------------------------------
+class LittleListener(ParseTreeListener):
 
     # Enter a parse tree produced by LittleParser#empty.
     def enterEmpty(self, ctx:LittleParser.EmptyContext):
@@ -157,59 +16,6 @@ class AST(ParseTreeListener):
     def exitEmpty(self, ctx:LittleParser.EmptyContext):
         pass
 
-
-     # Enter a parse tree produced by LittleParser#expr.
-    def enterExpr(self, ctx:LittleParser.ExprContext):
-        pass
-
-    # Exit a parse tree produced by LittleParser#expr.
-    def exitExpr(self, ctx:LittleParser.ExprContext):
-        # print("exiting expr")
-        pass
-
-    # Enter a parse tree produced by LittleParser#assign_expr.
-    def enterAssign_expr(self, ctx:LittleParser.Assign_exprContext):
-        self.root.op = ':='
-        # self.root.left = leaf(value=ctx.ident().getText())
-        self.root.left = self.visit_primary(ctx.ident())
-        # print("assigning to var {}".format(self.root.left))
-        self.root.right = self.visit_expr(ctx.getChild(2))
-        # print("root right {}".format(self.root.right))
-
-    # Exit a parse tree produced by LittleParser#assign_expr.
-    def exitAssign_expr(self, ctx:LittleParser.Assign_exprContext):
-        self.add_root()
-
-    # Enter a parse tree produced by LittleParser#string_decl.
-    def enterString_decl(self, ctx:LittleParser.String_declContext):
-        # return
-        self.root.op = ':='
-        # self.root.left = leaf(value=ctx.ident().getText())
-        self.root.left = self.visit_primary(ctx.ident())
-        # self.root.right = leaf(value=ctx.strt().getText())
-        self.root.right = self.visit_primary(ctx.strt())
-
-    # Exit a parse tree produced by LittleParser#string_decl.
-    def exitString_decl(self, ctx:LittleParser.String_declContext):
-        # return
-        self.add_root()
-
-    # Enter a parse tree produced by LittleParser#expr_prefix.
-    def enterExpr_prefix(self, ctx:LittleParser.Expr_prefixContext):
-        # print("entered")
-        return
-
-    # Exit a parse tree produced by LittleParser#expr_prefix.
-    def exitExpr_prefix(self, ctx:LittleParser.Expr_prefixContext):
-        pass
-
-    # Enter a parse tree produced by LittleParser#addop.
-    def enterAddop(self, ctx:LittleParser.AddopContext):
-        pass
-
-    # Exit a parse tree produced by LittleParser#addop.
-    def exitAddop(self, ctx:LittleParser.AddopContext):
-        pass
 
     # Enter a parse tree produced by LittleParser#program.
     def enterProgram(self, ctx:LittleParser.ProgramContext):
@@ -247,7 +53,13 @@ class AST(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by LittleParser#string_decl.
+    def enterString_decl(self, ctx:LittleParser.String_declContext):
+        pass
 
+    # Exit a parse tree produced by LittleParser#string_decl.
+    def exitString_decl(self, ctx:LittleParser.String_declContext):
+        pass
 
 
     # Enter a parse tree produced by LittleParser#strt.
@@ -394,6 +206,14 @@ class AST(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by LittleParser#assign_expr.
+    def enterAssign_expr(self, ctx:LittleParser.Assign_exprContext):
+        pass
+
+    # Exit a parse tree produced by LittleParser#assign_expr.
+    def exitAssign_expr(self, ctx:LittleParser.Assign_exprContext):
+        pass
+
 
     # Enter a parse tree produced by LittleParser#read_stmt.
     def enterRead_stmt(self, ctx:LittleParser.Read_stmtContext):
@@ -419,6 +239,24 @@ class AST(ParseTreeListener):
 
     # Exit a parse tree produced by LittleParser#return_stmt.
     def exitReturn_stmt(self, ctx:LittleParser.Return_stmtContext):
+        pass
+
+
+    # Enter a parse tree produced by LittleParser#expr.
+    def enterExpr(self, ctx:LittleParser.ExprContext):
+        pass
+
+    # Exit a parse tree produced by LittleParser#expr.
+    def exitExpr(self, ctx:LittleParser.ExprContext):
+        pass
+
+
+    # Enter a parse tree produced by LittleParser#expr_prefix.
+    def enterExpr_prefix(self, ctx:LittleParser.Expr_prefixContext):
+        pass
+
+    # Exit a parse tree produced by LittleParser#expr_prefix.
+    def exitExpr_prefix(self, ctx:LittleParser.Expr_prefixContext):
         pass
 
 
@@ -485,6 +323,15 @@ class AST(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by LittleParser#addop.
+    def enterAddop(self, ctx:LittleParser.AddopContext):
+        pass
+
+    # Exit a parse tree produced by LittleParser#addop.
+    def exitAddop(self, ctx:LittleParser.AddopContext):
+        pass
+
+
     # Enter a parse tree produced by LittleParser#mulop.
     def enterMulop(self, ctx:LittleParser.MulopContext):
         pass
@@ -537,3 +384,5 @@ class AST(ParseTreeListener):
     # Exit a parse tree produced by LittleParser#while_stmt.
     def exitWhile_stmt(self, ctx:LittleParser.While_stmtContext):
         pass
+
+

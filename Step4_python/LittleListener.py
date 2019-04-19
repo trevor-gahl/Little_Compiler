@@ -1,4 +1,4 @@
-# Generated from Little.g4 by ANTLR 4.7.1
+# Generated from /home/ubuntu/Little.g4 by ANTLR 4.7.1
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .LittleParser import LittleParser
@@ -8,30 +8,21 @@ else:
 # This class defines a complete listener for a parse tree produced by LittleParser.
 class LittleListener(ParseTreeListener):
 
-    # Enter a parse tree produced by LittleParser#empty.
-    def enterEmpty(self, ctx:LittleParser.EmptyContext):
-        pass
+    # Enter a parse tree produced by LittleParser#prog.
+    def enterProg(self, ctx:LittleParser.ProgContext):
+        print(";Printing works!!!")
 
-    # Exit a parse tree produced by LittleParser#empty.
-    def exitEmpty(self, ctx:LittleParser.EmptyContext):
-        pass
-
-
-    # Enter a parse tree produced by LittleParser#program.
-    def enterProgram(self, ctx:LittleParser.ProgramContext):
-        pass
-
-    # Exit a parse tree produced by LittleParser#program.
-    def exitProgram(self, ctx:LittleParser.ProgramContext):
+    # Exit a parse tree produced by LittleParser#prog.
+    def exitProg(self, ctx:LittleParser.ProgContext):
         pass
 
 
-    # Enter a parse tree produced by LittleParser#ident.
-    def enterIdent(self, ctx:LittleParser.IdentContext):
+    # Enter a parse tree produced by LittleParser#im.
+    def enterIm(self, ctx:LittleParser.ImContext):
         pass
 
-    # Exit a parse tree produced by LittleParser#ident.
-    def exitIdent(self, ctx:LittleParser.IdentContext):
+    # Exit a parse tree produced by LittleParser#im.
+    def exitIm(self, ctx:LittleParser.ImContext):
         pass
 
 
@@ -62,12 +53,12 @@ class LittleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by LittleParser#strt.
-    def enterStrt(self, ctx:LittleParser.StrtContext):
+    # Enter a parse tree produced by LittleParser#st.
+    def enterSt(self, ctx:LittleParser.StContext):
         pass
 
-    # Exit a parse tree produced by LittleParser#strt.
-    def exitStrt(self, ctx:LittleParser.StrtContext):
+    # Exit a parse tree produced by LittleParser#st.
+    def exitSt(self, ctx:LittleParser.StContext):
         pass
 
 
@@ -271,7 +262,12 @@ class LittleListener(ParseTreeListener):
 
     # Enter a parse tree produced by LittleParser#factor_prefix.
     def enterFactor_prefix(self, ctx:LittleParser.Factor_prefixContext):
-        pass
+        if ctx.getChildCount() == 0:
+            print(";No Kids!!!!")
+        else:
+            print(ctx.getChild(0).getText())
+
+        # pass
 
     # Exit a parse tree produced by LittleParser#factor_prefix.
     def exitFactor_prefix(self, ctx:LittleParser.Factor_prefixContext):
@@ -384,5 +380,3 @@ class LittleListener(ParseTreeListener):
     # Exit a parse tree produced by LittleParser#while_stmt.
     def exitWhile_stmt(self, ctx:LittleParser.While_stmtContext):
         pass
-
-

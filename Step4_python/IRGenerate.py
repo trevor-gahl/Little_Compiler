@@ -1,4 +1,4 @@
-from AST import AST, node_enum
+from ASTNode import ASTNode, node_enum
 
 # This class will traverse the AST Trees and create IR code objects for each node.
 # It will them combine all the code objects and print the resulting IR Code.
@@ -629,3 +629,6 @@ class CodeObject:
 
     def setResultLoc(self, tp):
         self.resType = tp
+
+
+    

@@ -1,4 +1,4 @@
-# Generated from /home/ubuntu/Little.g4 by ANTLR 4.7.1
+# Generated from Little.g4 by ANTLR 4.7.1
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .LittleParser import LittleParser
@@ -9,13 +9,18 @@ else:
 
 class LittleVisitor(ParseTreeVisitor):
 
-    # Visit a parse tree produced by LittleParser#prog.
-    def visitProg(self, ctx:LittleParser.ProgContext):
+    # Visit a parse tree produced by LittleParser#empty.
+    def visitEmpty(self, ctx:LittleParser.EmptyContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by LittleParser#im.
-    def visitIm(self, ctx:LittleParser.ImContext):
+    # Visit a parse tree produced by LittleParser#program.
+    def visitProgram(self, ctx:LittleParser.ProgramContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by LittleParser#ident.
+    def visitIdent(self, ctx:LittleParser.IdentContext):
         return self.visitChildren(ctx)
 
 
@@ -34,8 +39,8 @@ class LittleVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by LittleParser#st.
-    def visitSt(self, ctx:LittleParser.StContext):
+    # Visit a parse tree produced by LittleParser#strt.
+    def visitStrt(self, ctx:LittleParser.StrtContext):
         return self.visitChildren(ctx)
 
 
