@@ -1,0 +1,32 @@
+#running in python3.6
+
+
+#on a gen 8 or newer processor older versions of antlr4 don't work.
+
+#echo "making sure antlr4 runtime is installed for python 3"
+if !(test -f antlr4/Lexer.py)
+then
+	#echo "antlr4 not found, installing runtime and build now"
+    	DIR=$(pwd)  > /dev/null
+    	pip3 install antlr4-python3-runtime==4.5.2 --target=$DIR  > /dev/null
+fi
+
+#echo "running ANTLR4 for python 3 on Little.g"
+#checking if the tokens are already generated, if not run antlr4 to gen them
+if !(test -f Little.tokens)
+
+then
+  	antlr4 -Dlanguage=Python3 -visitor Little.g4  > /dev/null
+#	echo "Install of antlr4 complete"
+#	echo "now running Driver.py on testcases"
+#	sleep 1
+fi
+#echo "Now Parsing files with Driver.py"
+#echo " "
+
+#can feed in multiple files to parse.  will now seperate files sections
+for FILE1 in "$1"
+do
+python3 Driver.py $FILE1
+#echo ""
+done
